@@ -1,4 +1,4 @@
-use crate::libs::helper::{read_n_numbers_range, read_n_play_numbers};
+use crate::libs::helper::{print, read_n_numbers_range, read_n_play_numbers};
 
 
 #[derive(Debug, Clone, Copy)]
@@ -86,6 +86,10 @@ impl Game {
         self.hand.retain(|card| *card != played_card);
     }
 
+    pub fn get_stacks(&self) -> Vec<Vec<u8>> {
+        return self.stacks.clone();
+    }
+
     pub fn add_to_stacks(&mut self, numbers: Vec<u8>, first: bool) {
         self.set_unplayable_cards(numbers.clone());
         if first {
@@ -106,7 +110,6 @@ impl Game {
 
     fn apped_to_stacks(&mut self, mut numbers: Vec<u8>) {
         numbers.sort();
-        println!("Pre: {:?}", self.stacks);
 
         for num in numbers {
             let mut min_idx = 0;
@@ -128,15 +131,15 @@ impl Game {
 
             if diff == i8::MAX {
                 self.clean_stack(num);
+                continue;
             }
 
             self.stacks[min_idx].push(num);
         }
-        println!("After: {:?}", self.stacks);
     }
 
     fn clean_stack(&mut self, end_num: u8) {
-        println!("Which stack to clean?");
+        print("Which stack to clean? ".to_string());
         let choice = read_n_numbers_range(1, 1, 4)[0];
         let idx = (choice - 1) as usize;
         self.stacks[idx] = vec![end_num];

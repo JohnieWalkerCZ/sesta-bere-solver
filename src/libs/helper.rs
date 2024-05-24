@@ -1,7 +1,11 @@
-use std::io::{self, BufRead};
+use std::io::{self, BufRead, stdout, Write};
 
 pub fn print_error(message: String) {
     println!("[ \x1b[31;1mError\x1b[0m ] {}", message);
+}
+
+pub fn clear_console() {
+    print!("{esc}[2J{esc}[1;1H", esc = 27 as char);
 }
 
 pub fn read_n_numbers_range(n: u8, min: u8, max: u8) -> Vec<u8> {
@@ -49,4 +53,9 @@ pub fn read_n_numbers_range(n: u8, min: u8, max: u8) -> Vec<u8> {
 
 pub fn read_n_play_numbers(n: u8) -> Vec<u8> {
     read_n_numbers_range(n, 1, 100)
+}
+
+pub fn print(text: String) {
+    print!("{}", text);
+    stdout().flush().unwrap();
 }
