@@ -1,5 +1,4 @@
-use crate::libs::helper::{print, read_n_numbers_range, read_n_play_numbers};
-
+use crate::libs::helper::{print, read_n_numbers_range};
 
 #[derive(Debug, Clone, Copy)]
 pub struct Card {
@@ -9,10 +8,7 @@ pub struct Card {
 
 impl Card {
     pub fn new(played: bool, number: u8) -> Card {
-        Card {
-            played,
-            number,
-        }
+        Card { played, number }
     }
 }
 
@@ -43,7 +39,7 @@ impl Game {
 
         return cards;
     }
-    
+
     pub fn set_unplayable_cards(&mut self, cards: Vec<u8>) {
         let cards_set: std::collections::HashSet<u8> = cards.into_iter().collect();
 
@@ -53,7 +49,7 @@ impl Game {
             }
         }
     }
-    
+
     pub fn set_n_players(&mut self, n_players: u8) {
         self.n_players = n_players;
     }
@@ -74,7 +70,7 @@ impl Game {
     pub fn get_played_exclude_hand(&self) -> Vec<u8> {
         let mut result = Vec::new();
         for card in self.cards.clone() {
-            if card.played && !self.hand.contains(&card.number){
+            if card.played && !self.hand.contains(&card.number) {
                 result.push(card.number);
             }
         }
@@ -151,7 +147,10 @@ impl Game {
         let best_info = self.calculate_best_clean();
         let best_clean = best_info[0] + 1;
         let least_cows = best_info[1];
-        let str = format!("Which stack to clean? Least cows in stack {} is {}. ", best_clean, least_cows);
+        let str = format!(
+            "Which stack to clean? Least cows in stack {} is {}. ",
+            best_clean, least_cows
+        );
         print(str);
         let choice = read_n_numbers_range(1, 1, 4)[0];
         let idx = (choice - 1) as usize;
@@ -161,7 +160,7 @@ impl Game {
     fn calculate_best_clean(&self) -> Vec<u8> {
         let mut min_cows = u8::MAX;
         let mut min_idx = 0;
-        for (i,stack) in self.stacks.iter().enumerate() {
+        for (i, stack) in self.stacks.iter().enumerate() {
             let mut cows = 0;
             for num in stack {
                 if num % 11 == 0 {
