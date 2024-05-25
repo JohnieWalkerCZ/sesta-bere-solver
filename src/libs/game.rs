@@ -130,7 +130,12 @@ impl Game {
             }
 
             if diff == i8::MAX {
-                self.clean_stack(num);
+                self.choosable_clean_stack(num);
+                continue;
+            }
+
+            if self.stacks[min_idx].len() == 5 {
+                self.clean_stacks(min_idx, num);
                 continue;
             }
 
@@ -138,10 +143,47 @@ impl Game {
         }
     }
 
-    fn clean_stack(&mut self, end_num: u8) {
-        print("Which stack to clean? ".to_string());
+    fn clean_stacks(&mut self, idx: usize, end_num: u8) {
+        self.stacks[idx] = vec![end_num];
+    }
+
+    fn choosable_clean_stack(&mut self, end_num: u8) {
+        let best_info = self.calculate_best_clean();
+        let best_clean = best_info[0] + 1;
+        let least_cows = best_info[1];
+        let str = format!("Which stack to clean? Least cows in stack {} is {}. ", best_clean, least_cows);
+        print(str);
         let choice = read_n_numbers_range(1, 1, 4)[0];
         let idx = (choice - 1) as usize;
-        self.stacks[idx] = vec![end_num];
+        self.clean_stacks(idx, end_num)
+    }
+
+    fn calculate_best_clean(&self) -> Vec<u8> {
+        let mut min_cows = u8::MAX;
+        let mut min_idx = 0;
+        for (i,stack) in self.stacks.iter().enumerate() {
+            let mut cows = 0;
+            for num in stack {
+                if num % 11 == 0 {
+                    cows += 5;
+                    continue;
+                }
+                if num % 10 == 0 {
+                    cows += 3;
+                    continue;
+                } else if num % 5 == 0 {
+                    cows += 2;
+                    continue;
+                }
+
+                cows += 1;
+            }
+            if cows < min_cows {
+                min_cows = cows;
+                min_idx = i as u8;
+            }
+        }
+
+        vec![min_idx, min_cows]
     }
 }
