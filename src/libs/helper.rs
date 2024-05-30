@@ -4,6 +4,10 @@ pub fn print_error(message: String) {
     println!("[ \x1b[31;1mError\x1b[0m ] {}", message);
 }
 
+pub fn print_debug(message: String) {
+    println!("[ \x1b[96;1mDEBUG\x1b[0m ] {}", message);
+}
+
 pub fn clear_console() {
     print!("{esc}[2J{esc}[1;1H", esc = 27 as char);
 }
@@ -59,3 +63,5 @@ pub fn print(text: String) {
     print!("{}", text);
     stdout().flush().unwrap();
 }
+
+

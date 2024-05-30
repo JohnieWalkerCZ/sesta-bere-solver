@@ -1,16 +1,19 @@
 use crate::libs::game::Game;
 use crate::libs::helper::{clear_console, print, print_error, read_n_play_numbers};
+use crate::libs::solver::GameSolver;
 use std::collections::HashSet;
 
 #[derive(Debug)]
 pub struct GameManager {
     game: Game,
+    solver: GameSolver,
 }
 
 impl GameManager {
     pub fn new_game() -> GameManager {
         GameManager {
             game: Game::new_game(),
+            solver: GameSolver::new(),
         }
     }
 
@@ -26,6 +29,7 @@ impl GameManager {
     pub fn start_game_loop(&mut self) {
         loop {
             self.print_info();
+            self.solver.suggest_move(&self.game);
             let played_cards: Vec<u8> = self.read_played_cards();
             self.game.add_to_stacks(played_cards, false);
 
