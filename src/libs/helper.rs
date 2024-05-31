@@ -8,6 +8,10 @@ pub fn print_debug(message: String) {
     println!("[ \x1b[96;1mDEBUG\x1b[0m ] {}", message);
 }
 
+pub fn print_info(message: String) {
+    println!("[ \x1b[92;1mINFO\x1b[0m ] {}", message);
+}
+
 pub fn clear_console() {
     print!("{esc}[2J{esc}[1;1H", esc = 27 as char);
 }

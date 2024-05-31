@@ -1,4 +1,4 @@
-use crate::libs::helper::{print, read_n_numbers_range, print_debug};
+use crate::libs::helper::{print, read_n_numbers_range};
 
 #[derive(Debug, Clone, Copy)]
 pub struct Card {
@@ -120,22 +120,17 @@ impl Game {
 
     fn apped_to_stacks(&mut self, mut numbers: Vec<u8>) {
         numbers.sort();
-        print_debug("Appending to stacks".to_string());
-        print_debug(format!("Numbers: {:?}", numbers));
-        print_debug(format!("Stacks: {:?}", self.stacks));
         for num in numbers {
             let mut min_idx = 0;
             let mut diff = i8::MAX;
 
             for (i, arr) in self.stacks.iter().enumerate() {
                 let last_el = arr.last().unwrap_or(&0);
-                print_debug(format!("Last_el: {last_el}"));
                 if last_el > &num {
                     continue;
                 }
 
                 let new_diff: i8 = num as i8 - *last_el as i8;
-                print_debug(format!("Difference between {num} and {last_el} is {new_diff}"));
 
                 if new_diff < diff {
                     diff = new_diff;
